@@ -3,8 +3,8 @@ package com.hubspot.singularity.mesos;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.mesos.Protos.Offer;
-import org.apache.mesos.Protos.TaskInfo;
+import org.apache.mesos.v1.Protos.Offer;
+import org.apache.mesos.v1.Protos.TaskInfo;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
@@ -25,7 +25,7 @@ public class SingularityTaskSizeOptimizer {
     this.configuration = configuration;
   }
 
-  public SingularityTask getSizeOptimizedTask(SingularityTask task) {
+  SingularityTask getSizeOptimizedTask(SingularityTask task) {
     if (configuration.isStoreAllMesosTaskInfoForDebugging()) {
       return task;
     }
