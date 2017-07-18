@@ -41,7 +41,11 @@ public class SingularityAbort implements ConnectionStateListener {
   private final AtomicBoolean aborting = new AtomicBoolean();
 
   @Inject
-  public SingularityAbort(SingularitySmtpSender smtpSender, ServerProvider serverProvider, SingularityConfiguration configuration, SingularityExceptionNotifier exceptionNotifier, @Named(SingularityMainModule.HTTP_HOST_AND_PORT) HostAndPort hostAndPort) {
+  public SingularityAbort(SingularitySmtpSender smtpSender,
+                          ServerProvider serverProvider,
+                          SingularityConfiguration configuration,
+                          SingularityExceptionNotifier exceptionNotifier,
+                          @Named(SingularityMainModule.HTTP_HOST_AND_PORT) HostAndPort hostAndPort) {
     this.maybeSmtpConfiguration = configuration.getSmtpConfigurationOptional();
     this.serverProvider = serverProvider;
     this.smtpSender = smtpSender;
