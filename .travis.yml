@@ -1,23 +1,29 @@
+
+sudo: required
 language: java
+
 jdk:
   - oraclejdk7
   - openjdk7
   - oraclejdk8
 
-install: true
-script: mvn -B -q verify
 
-git:
-  depth: 100
 
-sudo: false
+script:
+  - mvn clean cobertura:cobertura -Dtest=SingularitySchedulerTest#testSchedulerPriority -DfailIfNoTests=false
 
-before_install:
-  - wget https://archive.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.zip
-  - unzip -qq apache-maven-3.3.9-bin.zip
-  - export M2_HOME=$PWD/apache-maven-3.3.9
-  - export PATH=$M2_HOME/bin:$PATH
+before_deploy:
+- tar -zcvf coverage-result.tar.gz /home/travis/build/leusonmario/Singularity/target/site/cobertura
 
-cache:
-  directories:
-  - $HOME/.m2
+deploy:
+  provider: releases
+  api_key:
+    secure: "aFTjriyThznGmwx5iQPKDwTLtS7T0lUak/wuPALJHkSYhVcTg4FuiHVH9r8hyrK05HJSNW725h9eyrk/UdUqkdNlpZEbn3Df9ii6W9MGi9vtrN3ZL4YJUnEDOXIb8NnR2/HKpnmzV1C7k0BoqKSIOs4rrgd50X68zIpFjpn80T4oA2/YM++lgDUqae2Vhj/ArlCU9QFZ0ExdfnDYKrilFRICNPdvUW/atLHRyFKG78myiDRaByp1/m830s9uBLiJ+3R2RiZQ2Xici+bV1fjEpEuJYBwAidbpXu5fwDQRfvrVvKMrVQG3JvjgYJ37dPwDfvmMtft/Djj194KRoDLUOsEbtrUUg0CUhyrLyPijjzUggcXKr1cxBCxCZjtno8tyYzm4JdbxcBNtCxJZ+zWGpkk4nveTa6/ZdHg37p7hDlx2pKkMOHVJ6ppSN1QewdvhlyZvXkOIZvuL/GhVoPHhF/xa6qyDB7wNmyWOjOtZLQfTeK1RGOnH0v6rSvQCpX230p8KKGdLWh0+9QEuIymhLQvu6J+A+sc/tL77XD5hYuW79PmocuTeEoH00b5hNVmeBIcGkcl3eNaR4angHG3oa5oQ5xCMPc6SilAql6xqCW7if9ohg86Uho//EU3/lCwC37vKG8Bhh8ElS2SP0SrfBG5v2wSaE13e0ocZ5/mOTPw="
+
+
+  file: coverage-result.tar.gz
+  file_glob: true
+  overwrite: true
+  skip_cleanup: true
+  on:
+    tags: true
