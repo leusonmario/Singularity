@@ -1,0 +1,25 @@
+
+sudo: required
+language: java
+
+jdk:
+  - oraclejdk8
+
+script:
+  - mvn clean cobertura:cobertura -Dtest=SingularitySchedulerTest#itCorrectlyUpdatesRequestDeletingStateHistory -DfailIfNoTests=false
+
+before_deploy:
+- tar -zcvf coverage-result.tar.gz /home/travis/build/leusonmario/Singularity/target/site/cobertura
+
+deploy:
+  provider: releases
+  api_key:
+    secure: "K4y2FiY/4bMzssHUHFH0dmCIueFIw5bRPSQ3mUbdj6sloDPvczFV3RG1kmwNJf6wQhUpnnziRWGCcMM4srP0J2eBhOkyOVkRdrWAT+vx3aXkaW0GDS6wpoOrwNHAPs+kvS3o3AONFkC+B0+EXbL5PkYmT+9+lGsoGgCAVsfU+jKUxgL38kTrpQTil6gerrYtCe3Dm5IHTJzwFk10PyZuNZLLlQPxCF88f5YJ1vLAxJ3U2YmoJjGv9YrRTtY5/o336tLw211zvvFdyWapYMzji3Qb4jnnAnZ6LbjxpbA2RomXe6+FQI0hQR63P8tmXd7JCk899Gfi/iPEyPxjuKYcg67dGgJ36KbLhAstWZ2DXN0r3eK3oN6ned4wHQi7JapGIttgibaf6S9SCjQnCtH6QcVpVGPQOcTbcQAh1tiapihJ3fmqKE1bu/uZW7FA5sTFjNSxL7Z5ogOxqo3j/+3gIZHpLxm849dgZfPXPCYU1dXGRO4peOkfUf3eVZDe9j28xKDw3TJ2YGSlM9hKtLPwHqcLKScZRmyvCuJhrEslujZ7LmFY7uSTBTQdxH0t/ABZVPudZ6TTKt53WMXRST0u1AE072E9UGCrNWFTjoz1FiUH0fGnPgXSXWsYyOgcJBeWZ8LKXEg/pR6wd8mlY3tszvV7hXjwjzgjSSJ3VWlJcdw="
+
+
+  file: coverage-result.tar.gz
+  file_glob: true
+  overwrite: true
+  skip_cleanup: true
+  on:
+    tags: true
